@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 //mui
 import { CssBaseline, Grid } from "@mui/material";
 
@@ -7,14 +9,24 @@ import List from "./components/list/List";
 import Map from "./components/map/Map";
 
 const App = () => {
+  const [coords, setCoords] = useState({});
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      ({ coords: { latitude, longitude } }) => {
+        setCoords({ lat: latitude, lng: longitude });
+      }
+    );
+  }, []);
   return (
     <>
       <CssBaseline />
       <Header />
-      <Grid container spacing={3} style={{ width: "100%" }}>
+      <Grid container style={{ width: "100%" }}>
         <Grid item xs={12} md={4}>
           <List />
         </Grid>
+
         <Grid
           item
           xs={12}
@@ -24,8 +36,9 @@ const App = () => {
             justifyContent: "center",
             alignItems: "center",
           }}
+          className="border"
         >
-          <Map />
+          <Map setCoords={setCoords} coords={coords} />
         </Grid>
       </Grid>
     </>
