@@ -5,7 +5,7 @@ const Header = () => {
   return (
     <div className="flex items-center justify-between px-3 md:px-10 text-white bg-green-600 shadow-lg h-[56px]">
       <h5 className="hidden font-semibold md:block md:text-2xl">
-        Travel Advisor
+        Travel Companion
       </h5>
 
       <div className="flex items-center md:space-x-3">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, createRef } from "react";
 import { IoChevronDownOutline } from "react-icons/io5";
 
 //mui
@@ -38,8 +38,25 @@ const ratingOptions = [
   },
 ];
 
-const List = ({ type, setType, places, loading }) => {
-  const [rating, setRating] = useState("");
+const List = ({
+  type,
+  setType,
+  places,
+  loading,
+  childClicked,
+  rating,
+  setRating,
+}) => {
+  console.log({ childClicked });
+  // const [elRefs, setElRefs] = useState([]);
+
+  // useEffect(() => {
+  //   setElRefs((refs) =>
+  //     Array(places.length)
+  //       .fill()
+  //       .map((_, i) => refs[i] || createRef())
+  //   );
+  // }, [places]);
 
   return (
     <div className="p-3 space-y-3 flex flex-col h-[90vh] lg:h-full overflow-hidden">
@@ -48,7 +65,7 @@ const List = ({ type, setType, places, loading }) => {
       </h1>
       {loading ? (
         <div className="flex items-center justify-center flex-grow">
-          <CircularProgress size="5rem" />
+          <CircularProgress />
         </div>
       ) : (
         <>
@@ -114,9 +131,17 @@ const List = ({ type, setType, places, loading }) => {
             </FormControl>
           </div>
 
-          <div className="flex-grow space-y-3 overflow-x-hidden overflow-y-auto">
+          <div className="grid flex-grow grid-cols-1 gap-5 overflow-x-hidden overflow-y-auto">
             {places?.map((place, idx) => {
-              return <PlaceDetails place={place} key={idx} />;
+              return (
+                <div key={idx}>
+                  <PlaceDetails
+                    place={place}
+                    selected={Number(childClicked) === idx}
+                    // refProps={elRefs[idx]}
+                  />
+                </div>
+              );
             })}
           </div>
         </>

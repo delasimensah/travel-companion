@@ -11,7 +11,9 @@ const App = () => {
   const [places, setPlaces] = useState([]);
   const [bounds, setBounds] = useState(null);
   const [type, setType] = useState("restaurants");
+  const [rating, setRating] = useState("");
   const [loading, setLoading] = useState(false);
+  const [childClicked, setChildClicked] = useState(null);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -25,22 +27,35 @@ const App = () => {
     if (bounds) {
       setLoading(true);
       getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
-        // console.log("places: ", data);
         setPlaces(data);
         setLoading(false);
       });
     }
-  }, [coords, bounds, type]);
+  }, [bounds, type]);
 
   return (
     <div className="md:100vh">
       <Header />
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr,3fr] w-full h-[calc(100vh-56px)]">
-        <List type={type} setType={setType} places={places} loading={loading} />
+      <div className="grid grid-cols-1 lg:grid-cols-[400px,3fr] w-full h-[calc(100vh-56px)]">
+        <List
+          type={type}
+          setType={setType}
+          rating={rating}
+          setRating={setRating}
+          places={places}
+          loading={loading}
+          childClicked={childClicked}
+        />
 
         <div className="flex items-center justify-center">
-          <Map setCoords={setCoords} coords={coords} setBounds={setBounds} />
+          <Map
+            setCoords={setCoords}
+            coords={coords}
+            setBounds={setBounds}
+            places={places}
+            setChildClicked={setChildClicked}
+          />
         </div>
       </div>
     </div>
