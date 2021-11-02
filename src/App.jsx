@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-
-//mui
-import { CssBaseline, Grid } from "@mui/material";
+import { getPlacesData } from "./api/travelAdvisorApi";
 
 //components
 import Header from "./components/header/Header";
@@ -10,6 +8,10 @@ import Map from "./components/map/Map";
 
 const App = () => {
   const [coords, setCoords] = useState({});
+  const [places, setPlaces] = useState([]);
+  const [bounds, setBounds] = useState(null);
+  const [type, setType] = useState("restaurants");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -18,30 +20,30 @@ const App = () => {
       }
     );
   }, []);
-  return (
-    <>
-      <CssBaseline />
-      <Header />
-      <Grid container style={{ width: "100%" }}>
-        <Grid item xs={12} md={4}>
-          <List />
-        </Grid>
 
-        <Grid
-          item
-          xs={12}
-          md={8}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          className="border"
-        >
-          <Map setCoords={setCoords} coords={coords} />
-        </Grid>
-      </Grid>
-    </>
+  useEffect(() => {
+    if (bounds) {
+      setLoading(true);
+      getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
+        // console.log("places: ", data);
+        setPlaces(data);
+        setLoading(false);
+      });
+    }
+  }, [coords, bounds, type]);
+
+  return (
+    <div className="md:100vh">
+      <Header />
+
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr,3fr] w-full h-[calc(100vh-56px)]">
+        <List type={type} setType={setType} places={places} loading={loading} />
+
+        <div className="flex items-center justify-center">
+          <Map setCoords={setCoords} coords={coords} setBounds={setBounds} />
+        </div>
+      </div>
+    </div>
   );
 };
 

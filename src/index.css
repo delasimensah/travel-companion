@@ -5,9 +5,28 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --primary: #059669;
+}
+
 * {
   /* font-family: "Manrope", sans-serif; */
   font-family: "Nunito Sans", sans-serif;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) white;
+}
+
+*::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: white;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--primary);
 }
 
 .css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input:focus {
