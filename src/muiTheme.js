@@ -1,4 +1,4 @@
-import { createTheme } from "@material-ui/core/styles";
+import { createTheme } from "@mui/material/styles";
 
 export default createTheme({
   typography: {
@@ -6,7 +6,7 @@ export default createTheme({
   },
   palette: {
     primary: {
-      main: "#16a085",
+      main: "#059669",
     },
   },
 });

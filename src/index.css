@@ -9,3 +9,19 @@
   /* font-family: "Manrope", sans-serif; */
   font-family: "Nunito Sans", sans-serif;
 }
+
+.css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input:focus {
+  background-color: transparent !important;
+}
+
+.css-1480iag-MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled)::before {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.42) !important;
+}
+
+/* .css-1480iag-MuiInputBase-root-MuiInput-root::after {
+  border-bottom: 2px solid #059669 !important;
+}
+
+.css-1c2i806-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+  color: #059669 !important;
+} */
