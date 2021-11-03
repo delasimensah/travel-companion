@@ -47,16 +47,15 @@ const List = ({
   rating,
   setRating,
 }) => {
-  console.log({ childClicked });
-  // const [elRefs, setElRefs] = useState([]);
+  const [elRefs, setElRefs] = useState([]);
 
-  // useEffect(() => {
-  //   setElRefs((refs) =>
-  //     Array(places.length)
-  //       .fill()
-  //       .map((_, i) => refs[i] || createRef())
-  //   );
-  // }, [places]);
+  useEffect(() => {
+    setElRefs((refs) =>
+      Array(places.length)
+        .fill()
+        .map((_, i) => refs[i] || createRef())
+    );
+  }, [places]);
 
   return (
     <div className="p-3 space-y-3 flex flex-col h-[90vh] lg:h-full overflow-hidden">
@@ -134,11 +133,11 @@ const List = ({
           <div className="grid flex-grow grid-cols-1 gap-5 overflow-x-hidden overflow-y-auto">
             {places?.map((place, idx) => {
               return (
-                <div key={idx}>
+                <div key={idx} ref={elRefs[idx]}>
                   <PlaceDetails
                     place={place}
                     selected={Number(childClicked) === idx}
-                    // refProps={elRefs[idx]}
+                    refProp={elRefs[idx]}
                   />
                 </div>
               );
