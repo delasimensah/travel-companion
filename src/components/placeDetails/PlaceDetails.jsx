@@ -58,8 +58,8 @@ const ProductDetails = ({ place, selected, refProp }) => {
           <p className="text-xs">{place.ranking}</p>
         </div>
 
-        {place?.awards?.map((award) => (
-          <div className="flex items-center justify-between my-2">
+        {place?.awards?.map((award, i) => (
+          <div key={i} className="flex items-center justify-between my-2">
             <img src={award.images.small} alt="" className="w-4" />
             <p className="text-xs font-medium text-gray-400">
               {award.display_name}

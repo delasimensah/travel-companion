@@ -9,6 +9,7 @@ import Map from "./components/map/Map";
 const App = () => {
   const [coords, setCoords] = useState({});
   const [places, setPlaces] = useState([]);
+  const [filteredPlaces, setFilteredPlaces] = useState([]);
   const [bounds, setBounds] = useState(null);
   const [type, setType] = useState("restaurants");
   const [rating, setRating] = useState("");
@@ -24,10 +25,19 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    const filtered = places?.filter((place) => Number(place.rating) > rating);
+
+    setFilteredPlaces(filtered);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rating]);
+
+  useEffect(() => {
     if (bounds) {
       setLoading(true);
       getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
         setPlaces(data?.filter((place) => place.name && place.num_reviews > 0));
+        setFilteredPlaces([]);
+        setRating("");
         setLoading(false);
       });
     }
@@ -43,7 +53,7 @@ const App = () => {
           setType={setType}
           rating={rating}
           setRating={setRating}
-          places={places}
+          places={filteredPlaces.length ? filteredPlaces : places}
           loading={loading}
           childClicked={childClicked}
         />
@@ -53,7 +63,7 @@ const App = () => {
             setCoords={setCoords}
             coords={coords}
             setBounds={setBounds}
-            places={places}
+            places={filteredPlaces.length ? filteredPlaces : places}
             setChildClicked={setChildClicked}
           />
         </div>
