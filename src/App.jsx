@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import { getPlacesData } from "./api/travelAdvisorApi";
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
 
 //components
 import Header from "./components/header/Header";
@@ -15,6 +19,28 @@ const App = () => {
   const [rating, setRating] = useState("");
   const [loading, setLoading] = useState(false);
   const [childClicked, setChildClicked] = useState(null);
+
+  const {
+    ready,
+    value,
+    suggestions: { data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    debounce: 300,
+  });
+
+  const onSelect = async (suggestion) => {
+    const results = await getGeocode({ placeId: suggestion.place_id });
+
+    const coordinates = await getLatLng(results[0]);
+    console.log(coordinates);
+
+    setValue(suggestion.description, false);
+    setCoords(coordinates);
+
+    clearSuggestions();
+  };
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -45,7 +71,13 @@ const App = () => {
 
   return (
     <div className="md:100vh">
-      <Header />
+      <Header
+        data={data}
+        onSelect={onSelect}
+        ready={ready}
+        value={value}
+        setValue={setValue}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-[400px,3fr] w-full h-[calc(100vh-56px)]">
         <List
@@ -58,7 +90,7 @@ const App = () => {
           childClicked={childClicked}
         />
 
-        <div className="flex items-center justify-center">
+        <div className="z-10 flex items-center justify-center">
           <Map
             setCoords={setCoords}
             coords={coords}
